@@ -1,0 +1,12 @@
+stages:
+  - test
+
+unit-test:
+  stage: test
+  image: python:3.12-slim
+  script:
+    - python -m unittest discover -s tests -v
+    - ./jetson-remote --version
+    - ./jetson-remote inspect --json > /tmp/inspect.json
+    - ./jetson-remote plan --report /tmp/inspect.json --json > /tmp/plan.json
+

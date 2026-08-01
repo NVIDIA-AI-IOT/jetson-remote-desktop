@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "last_reviewed": "2026-08-01",
+  "video_codec_sdk": {
+    "version": "13.1",
+    "jetson_soc_requirement": "jetson-agx-thor",
+    "minimum_l4t": "39.2",
+    "source": "https://docs.nvidia.com/video-technologies/video-codec-sdk/13.1/read-me/index.html"
+  },
+  "targets": [
+    {
+      "platform": "jetson-agx-thor",
+      "l4t": "39.2",
+      "hardware_encode": "present",
+      "video_codec_sdk_13_1": "official-candidate",
+      "validation": "required"
+    },
+    {
+      "platform": "jetson-agx-thor",
+      "l4t": "38.4",
+      "hardware_encode": "present",
+      "video_codec_sdk_13_1": "unsupported-l4t",
+      "validation": "partial-live-evidence"
+    },
+    {
+      "platform": "jetson-agx-orin",
+      "l4t": "39.2",
+      "hardware_encode": "present",
+      "video_codec_sdk_13_1": "unsupported-soc",
+      "validation": "partial-live-evidence"
+    },
+    {
+      "platform": "jetson-agx-orin",
+      "l4t": "38.4",
+      "hardware_encode": "present",
+      "video_codec_sdk_13_1": "unsupported-soc-and-l4t",
+      "validation": "required"
+    },
+    {
+      "platform": "jetson-orin-nano",
+      "l4t": "39.2",
+      "hardware_encode": "absent",
+      "video_codec_sdk_13_1": "unsupported-soc",
+      "validation": "required"
+    },
+    {
+      "platform": "jetson-orin-nano",
+      "l4t": "38.4",
+      "hardware_encode": "absent",
+      "video_codec_sdk_13_1": "unsupported-soc-and-l4t",
+      "validation": "required"
+    }
+  ]
+}
+

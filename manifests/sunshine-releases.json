@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "last_reviewed": "2026-08-01",
+  "releases": [
+    {
+      "version": "v2026.516.143833",
+      "platform": "ubuntu-24.04-arm64",
+      "asset": "sunshine-ubuntu-24.04-arm64.deb",
+      "url": "https://github.com/LizardByte/Sunshine/releases/download/v2026.516.143833/sunshine-ubuntu-24.04-arm64.deb",
+      "size": 9653128,
+      "sha256": "9290637b85598fb6eba371651524d6c2a4bd62d0f357ab9a76f6636a6cc26033"
+    }
+  ]
+}
+

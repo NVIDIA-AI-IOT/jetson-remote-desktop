@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jetson-remote-desktop"
+version = "0.1.0.dev0"
+description = "Safe remote desktop discovery and setup workflows for NVIDIA Jetson"
+requires-python = ">=3.10"
+
+[project.scripts]
+jetson-remote = "jetson_remote.cli:main"
+
+[tool.setuptools]
+packages = ["jetson_remote"]
+
