@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Sequence
 
 from .inspect import collect_report, render_human
+from .edid import analyze_edid_file
 from .planner import build_plan, render_plan
 
 
@@ -33,6 +34,13 @@ def _parser() -> argparse.ArgumentParser:
         "--report",
         type=Path,
         help="Use a JSON report from 'inspect --json' instead of this host.",
+    )
+    edid_parser = commands.add_parser(
+        "edid-inspect", help="Validate an EDID file without changing display state."
+    )
+    edid_parser.add_argument("path", type=Path)
+    edid_parser.add_argument(
+        "--json", action="store_true", help="Write the EDID report as JSON."
     )
     plan_parser.add_argument(
         "--json", action="store_true", help="Write the plan as JSON to stdout."
@@ -62,5 +70,23 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(render_plan(plan))
         return 0
 
-    return 2
+    if args.command == "edid-inspect":
+        report = analyze_edid_file(args.path)
+        if args.json:
+            print(json.dumps(report, indent=2, sort_keys=True))
+        else:
+            preferred = report.get("preferred_timing") or {}
+            print(f"EDID: {report['path']}")
+            print(f"Size: {report['size']} bytes")
+            print(f"SHA-256: {report['sha256']}")
+            print(f"Valid: {report['valid']}")
+            print(f"Block checksums: {report['block_checksums_valid']}")
+            if preferred:
+                print(
+                    "Preferred: "
+                    f"{preferred['width']}x{preferred['height']}@{preferred['refresh_hz']}"
+                )
+            print(f"CTA 1080p60: {report['supports_cta_1080p60']}")
+        return 0 if report["valid"] else 1
 
+    return 2

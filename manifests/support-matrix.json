@@ -20,7 +20,7 @@
       "l4t": "38.4",
       "hardware_encode": "present",
       "video_codec_sdk_13_1": "unsupported-l4t",
-      "validation": "partial-live-evidence"
+      "validation": "verified-live-1080p60-h264-input"
     },
     {
       "platform": "jetson-agx-orin",
@@ -52,4 +52,3 @@
     }
   ]
 }
-

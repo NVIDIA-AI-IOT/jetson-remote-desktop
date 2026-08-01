@@ -10,9 +10,9 @@ rollback as separate phases.
 
 ## Status
 
-Early development. The initial implementation provides read-only inspection
-and an evidence-based plan. It does not install packages, load kernel modules,
-change the firewall, or start remote-desktop listeners.
+Early development. The implementation provides read-only inspection, EDID
+validation, and an evidence-based plan. It does not install packages, load
+kernel modules, change the firewall, or start remote-desktop listeners.
 
 ## Quick start
 
@@ -23,9 +23,12 @@ cd jetson-remote-desktop
 ./jetson-remote inspect
 ./jetson-remote inspect --json
 ./jetson-remote plan
+./jetson-remote edid-inspect /path/to/monitor.edid
 ```
 
 `inspect` and `plan` are intentionally read-only and never invoke `sudo`.
+`edid-inspect` reads only the selected file and validates its structure,
+checksums, hash, preferred timing, and CTA 1080p60 support.
 
 ## Safety model
 
@@ -86,8 +89,11 @@ inspect (read-only)
 The initial design is informed by live evaluation on:
 
 - Jetson AGX Thor, L4T R38.4: X11 capture and Sunshine H.264/HEVC NVENC
-  initialization succeeded; transient external `uinput` was required because
-  the running kernel had `CONFIG_INPUT_UINPUT` disabled.
+  initialization succeeded; a live 1920x1080 approximately 60 FPS H.264 stream
+  and keyboard/mouse control were verified from Moonlight on Windows. A
+  checksum-valid forced EDID was required for a non-NULL headless NVIDIA
+  MetaMode. Transient external `uinput` was required because the running kernel
+  had `CONFIG_INPUT_UINPUT` disabled.
 - Jetson AGX Thor, L4T R39.2: target for the Video Codec SDK 13.1 NVENCODE
   workflow; full SDK sample proof remains pending.
 - Jetson AGX Orin, L4T R39.2: FFmpeg `h264_nvenc` reported unsupported device;
@@ -96,6 +102,9 @@ The initial design is informed by live evaluation on:
 Raw machine-specific evidence is deliberately not committed until it has been
 redacted and normalized into the repository schema.
 
+See [the headless NVIDIA Xorg workflow](docs/headless-xorg.md) and the
+[normalized Thor R38.4 evidence](docs/evidence/thor-r38.4-sunshine-moonlight.md).
+
 ## References
 
 - [NVIDIA Video Codec SDK 13.1 Read Me](https://docs.nvidia.com/video-technologies/video-codec-sdk/13.1/read-me/index.html)
@@ -103,4 +112,3 @@ redacted and normalized into the repository schema.
 - [NVIDIA accelerated GStreamer documentation](https://docs.nvidia.com/jetson/archives/r39.2/DeveloperGuide/SD/Multimedia/AcceleratedGstreamer.html)
 - [Sunshine documentation](https://docs.lizardbyte.dev/projects/sunshine/latest/)
 - [Moonlight documentation](https://github.com/moonlight-stream/moonlight-docs/wiki)
-

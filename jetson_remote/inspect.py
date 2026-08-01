@@ -7,6 +7,7 @@ Failures are recorded as unavailable values instead of triggering remediation.
 from __future__ import annotations
 
 import datetime as dt
+import glob
 import os
 import platform
 import re
@@ -15,6 +16,8 @@ import socket
 import subprocess
 from pathlib import Path
 from typing import Any
+
+from .edid import analyze_edid
 
 
 def _read(path: str) -> str | None:
@@ -98,6 +101,25 @@ def _device(path: str) -> dict[str, Any]:
     }
 
 
+def _drm_connectors() -> list[dict[str, Any]]:
+    connectors: list[dict[str, Any]] = []
+    for status_path in sorted(glob.glob("/sys/class/drm/card*-*/status")):
+        connector_dir = Path(status_path).parent
+        status = _read(status_path)
+        item: dict[str, Any] = {
+            "name": connector_dir.name,
+            "status": status,
+        }
+        edid_path = connector_dir / "edid"
+        try:
+            data = edid_path.read_bytes()
+        except (FileNotFoundError, PermissionError, OSError):
+            data = b""
+        item["edid"] = analyze_edid(data) if data else {"size": 0, "valid": False}
+        connectors.append(item)
+    return connectors
+
+
 def collect_report() -> dict[str, Any]:
     model = _read("/proc/device-tree/model")
     compatible_raw = _read("/proc/device-tree/compatible")
@@ -145,6 +167,9 @@ def collect_report() -> dict[str, Any]:
             "dri_render128": _device("/dev/dri/renderD128"),
             "v4l2_nvenc": _device("/dev/v4l2-nvenc"),
         },
+        "display_topology": {
+            "drm_connectors": _drm_connectors(),
+        },
         "commands": {name: shutil.which(name) for name in commands},
         "probes": {
             "hostname_addresses": _run(["hostname", "-I"]),
@@ -173,6 +198,12 @@ def render_human(report: dict[str, Any]) -> str:
     for name, value in report["devices"].items():
         access = "rw" if value.get("readable") and value.get("writable") else "limited"
         lines.append(f"  {name:16} {'present' if value['present'] else 'absent':7} {access}")
+    lines.extend(["", "DRM connectors:"])
+    for connector in report["display_topology"]["drm_connectors"]:
+        edid = connector["edid"]
+        lines.append(
+            f"  {connector['name']:20} {connector.get('status') or 'unknown':12} "
+            f"EDID={edid.get('size', 0)} bytes valid={edid.get('valid', False)}"
+        )
     lines.extend(["", "No system changes were made."])
     return "\n".join(lines)
-
