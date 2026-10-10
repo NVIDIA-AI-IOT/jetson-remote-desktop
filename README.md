@@ -112,3 +112,12 @@ See [the headless NVIDIA Xorg workflow](docs/headless-xorg.md) and the
 - [NVIDIA accelerated GStreamer documentation](https://docs.nvidia.com/jetson/archives/r39.2/DeveloperGuide/SD/Multimedia/AcceleratedGstreamer.html)
 - [Sunshine documentation](https://docs.lizardbyte.dev/projects/sunshine/latest/)
 - [Moonlight documentation](https://github.com/moonlight-stream/moonlight-docs/wiki)
+
+## License and contributions
+
+NVIDIA-authored code in this project is licensed under the
+[Apache License 2.0](LICENSE). External contributions are welcome and require
+DCO sign-off; see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Third-party software referenced or used with this project remains subject to
+its respective licenses.
