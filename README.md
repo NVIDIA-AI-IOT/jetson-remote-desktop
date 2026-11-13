@@ -17,7 +17,7 @@ kernel modules, change the firewall, or start remote-desktop listeners.
 ## Quick start
 
 ```bash
-git clone https://gitlab-master.nvidia.com/Jetson-TME/jetson-remote-desktop.git
+git clone https://github.com/NVIDIA-AI-IOT/jetson-remote-desktop.git
 cd jetson-remote-desktop
 
 ./jetson-remote inspect
