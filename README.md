@@ -121,4 +121,3 @@ DCO sign-off; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Third-party software referenced or used with this project remains subject to
 its respective licenses.
-

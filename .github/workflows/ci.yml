@@ -51,4 +51,3 @@ jobs:
           assert plan['read_only'] is True
           assert plan['changes_proposed'] == []
           PY
-
